@@ -184,15 +184,20 @@ return [
     */
 
     'watch' => [
-        'app',
-        'bootstrap',
-        'config/**/*.php',
-        'database/**/*.php',
-        'public/**/*.php',
-        'resources/**/*.php',
-        'routes',
-        'composer.lock',
-        '.env',
+        'watch' => [
+            'app',
+            'bootstrap',
+            'config',
+            'database',
+            'public/**/*.php',
+            'resources/**/*.php',
+            'routes',
+            'composer.lock',
+            'Modules/**/*.php',  //folder laravel module
+            'Modules/**/*.js',     //folder laravel module
+            'Modules/**/*.css',  //folder laravel module
+            '.env',
+        ],
     ],
 
     /*
