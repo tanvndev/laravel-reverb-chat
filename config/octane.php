@@ -193,9 +193,9 @@ return [
             'resources/**/*.php',
             'routes',
             'composer.lock',
-            'Modules/**/*.php',  //folder laravel module
-            'Modules/**/*.js',     //folder laravel module
-            'Modules/**/*.css',  //folder laravel module
+            // 'Modules/**/*.php',  //folder laravel module
+            // 'Modules/**/*.js',     //folder laravel module
+            // 'Modules/**/*.css',  //folder laravel module
             '.env',
         ],
     ],

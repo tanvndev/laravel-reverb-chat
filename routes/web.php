@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\ChatMessage;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +22,40 @@ Route::get('/', function () {
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $users = User::whereNot('id', Auth::id())->get();
+
+    return view('dashboard', compact('users'));
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+Route::get('/chat/{user}', function (User $user) {
+    return view('chat', [
+        'user' => $user
+    ]);
+})->middleware(['auth'])->name('chat');
+
+Route::get('messages/{user}', function (User $user) {
+    return ChatMessage::query()
+        ->where(function ($query) use ($user) {
+            $query->where('sender_id', Auth::id())
+                ->where('receiver_id', $user->id);
+        })
+        ->orWhere(function ($query) use ($user) {
+            $query->where('sender_id', $user->id)
+                ->where('receiver_id', Auth::id());
+        })
+        ->with(['sender', 'receiver'])
+        ->orderBy('id', 'asc')
+        ->get();
+})->middleware(['auth']);
+
+Route::post('messages/{user}', function (User $user) {
+    $message = ChatMessage::create([
+        'sender_id' => Auth::id(),
+        'receiver_id' => $user->id,
+        'text' => request('text')
+    ]);
+
+    return $message;
+});
+
+require __DIR__ . '/auth.php';
